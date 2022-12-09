@@ -236,10 +236,12 @@ const FormsContainer = styled.form`
         width: 60%;
         height: 42px;
         background: #E8833A;
+        border: none;
         border-radius: 3px;
         color: #FFFFFF;
         font-size: 18px;
         font-weight: 400;
+        margin-top: 32px;
     }
 `
 
