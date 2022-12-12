@@ -79,7 +79,7 @@ const SeatsPage = ({
             </TitleBox>
             <SeatsContainer>
                 {seats.map(a =>
-                    <li key={a.id} onClick={() => selectSeat(a)} className={!a.isAvailable ? "not-available" :
+                    <li key={a.id} data-test="seat" onClick={() => selectSeat(a)} className={!a.isAvailable ? "not-available" :
                         selectedSeats.includes(a.id) ? "selected" : null}>
                         <p>{a.name}</p>
                     </li>
@@ -102,15 +102,15 @@ const SeatsPage = ({
             <FormsContainer onSubmit={finishPurchase}>
                 <div>
                     <p>Nome do Comprador:</p>
-                    <input type="text" value={buyerName} onChange={e => setBuyerName(e.target.value)} placeholder="Digite seu nome..." required />
+                    <input type="text" data-test="client-name" value={buyerName} onChange={e => setBuyerName(e.target.value)} placeholder="Digite seu nome..." required />
                 </div>
                 <div>
                     <p>CPF do Comprador:</p>
-                    <input type="text" value={buyerId} onChange={e => setBuyerId(e.target.value)} placeholder="Digite seu CPF..." required />
+                    <input type="number" data-test="client-cpf" value={buyerId} onChange={e => setBuyerId(e.target.value)} placeholder="Digite seu CPF..." required />
                 </div>
-                <button type="submit">Reservar assento(s)</button>
+                <button type="submit" data-test="book-seat-btn">Reservar assento(s)</button>
             </FormsContainer>
-            <FooterContainer>
+            <FooterContainer data-test="footer">
                 <PosterBox>
                     <img src={movie.posterURL} />
                 </PosterBox>

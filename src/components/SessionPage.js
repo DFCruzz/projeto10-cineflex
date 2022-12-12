@@ -29,12 +29,6 @@ const SessionPage = ({
         })
     }, [])
 
-    if(session.length === 0 || movie.length === 0 ) {
-        return (
-            <div>Carregando....</div>
-        )
-    }
-
     return (
         <>
             <TitleBox>
@@ -42,20 +36,20 @@ const SessionPage = ({
             </TitleBox>
             <SectionContainer>
                 {session.map((a, index) =>
-                    <div key={a.id}>
+                    <div data-test="movie-day" key={a.id}>
                         <h2>{a.weekday} {a.date}</h2>
                         
                         <ul>
                             {session[index].showtimes.map(b =>
-                                <Link key={b.id} to={`/assentos/${b.id}`}>
-                                    <li>{b.name}</li>
+                                <Link data-test="showtime" key={b.id} to={`/assentos/${b.id}`}>
+                                    <li data-test="movie-day">{b.name}</li>
                                 </Link>
                             )}
                         </ul>
                     </div>
                 )}
             </SectionContainer>
-            <FooterContainer>
+            <FooterContainer data-test="footer">
                 <PosterBox>
                     <img src={movie.posterURL} />
                 </PosterBox>

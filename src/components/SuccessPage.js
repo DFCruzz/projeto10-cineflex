@@ -40,25 +40,25 @@ const SuccessPage = ({
                 <p>Pedido feito</p>
                 <p>com sucesso!</p>
             </TitleBox>
-            <ContentBox>
+            <ContentBox data-test="movie-info">
                 <h2>Filme e Sessão</h2>
                 <p>{movie.title}</p>
                 <p>{session.date} {time.name}</p>
             </ContentBox>
-            <ContentBox>
+            <ContentBox data-test="seats-info">
                 <h2>Ingressos</h2>
-                {seatNumbers.map(a =>
-                    <p>Assento {a}</p>
+                {seatNumbers.map((a, index) =>
+                    <p key={index}>Assento {a}</p>
                 )}
             </ContentBox>
-            <ContentBox>
+            <ContentBox data-test="client-info">
                 <h2>Comprador</h2>
                 <p>{buyerName}</p>
                 <p>{buyerId}</p>
             </ContentBox>
             <FinishButton>
-                <Link to="/">
-                    <button onClick={resetStates}>Voltar para Home</button>
+                <Link data-test="go-home-btn" to="/">
+                    <EndButton onClick={resetStates}>Voltar para Home</EndButton>
                 </Link>
             </FinishButton>
         </>
@@ -110,18 +110,18 @@ const FinishButton = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+`
 
-    button {
-        width: 60%;
-        height: 42px;
-        background: #E8833A;
-        border: none;
-        border-radius: 3px;
-        color: #FFFFFF;
-        font-size: 18px;
-        font-weight: 400;
-        margin-top: 32px;
-        margin-left: auto;
-        margin-right: auto;
-    }
+const EndButton = styled.button`
+    width: 60%;
+    height: 42px;
+    background: #E8833A;
+    border: none;
+    border-radius: 3px;
+    color: #FFFFFF;
+    font-size: 18px;
+    font-weight: 400;
+    margin-top: 32px;
+    margin-left: auto;
+    margin-right: auto;
 `
