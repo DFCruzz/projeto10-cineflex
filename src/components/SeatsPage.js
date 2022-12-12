@@ -54,6 +54,10 @@ const SeatsPage = ({
         }
     }
 
+    function unavailableSeat() {
+        alert("Esse assento não está disponível")
+    }
+
     function finishPurchase (event) {
 		event.preventDefault()
         console.log(selectedSeats)
@@ -79,7 +83,7 @@ const SeatsPage = ({
             </TitleBox>
             <SeatsContainer>
                 {seats.map(a =>
-                    <li key={a.id} data-test="seat" onClick={() => selectSeat(a)} className={!a.isAvailable ? "not-available" :
+                    <li key={a.id} data-test="seat" onClick={a.isAvailable ? () => selectSeat(a) : unavailableSeat} className={!a.isAvailable ? "not-available" :
                         selectedSeats.includes(a.id) ? "selected" : null}>
                         <p>{a.name}</p>
                     </li>
