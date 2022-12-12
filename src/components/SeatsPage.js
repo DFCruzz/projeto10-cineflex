@@ -1,6 +1,6 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { useEffect, useState  } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const SeatsPage = ({
@@ -9,12 +9,21 @@ const SeatsPage = ({
     session,
     setSession,
     seats,
-    setSeats
+    setSeats,
+    time,
+    setTime,
+    selectedSeats,
+    setSelectedSeats,
+    buyerName,
+    setBuyerName,
+    buyerId,
+    setBuyerId,
+    seatNumbers,
+    setSeatNumbers,
 }) => {
 
-    const [time, setTime] = useState([])
-
     const { sessionId } = useParams()
+    const navigate = useNavigate()
 
     useEffect(() => {
         const promise = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${sessionId}/seats`)
@@ -33,6 +42,36 @@ const SeatsPage = ({
         })
     }, [])
 
+    function selectSeat(event) {
+
+        if (selectedSeats.includes(event.id)) {
+            setSelectedSeats(selectedSeats => selectedSeats.filter(e => e !== event.id))
+            setSeatNumbers(seatNumbers => seatNumbers.filter(e => e !== event.name))
+        }
+        else {
+            setSelectedSeats([...selectedSeats, event.id])
+            setSeatNumbers([...seatNumbers, event.name])
+        }
+    }
+
+    function finishPurchase (event) {
+		event.preventDefault()
+        console.log(selectedSeats)
+
+
+		const request = axios.post("https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many", {
+            ids: [...selectedSeats],
+			name: buyerName,
+			cpf: buyerId,
+		})
+
+		request.then(() => navigate("/sucesso")) 
+
+		request.catch(e => {
+            console.log(e.response.data)
+        })
+	}
+
     return (
         <>
             <TitleBox>
@@ -40,7 +79,8 @@ const SeatsPage = ({
             </TitleBox>
             <SeatsContainer>
                 {seats.map(a =>
-                    <li key={a.id} className={a.isAvailable ? null : "not-available"}>
+                    <li key={a.id} onClick={() => selectSeat(a)} className={!a.isAvailable ? "not-available" :
+                        selectedSeats.includes(a.id) ? "selected" : null}>
                         <p>{a.name}</p>
                     </li>
                 )}
@@ -59,14 +99,14 @@ const SeatsPage = ({
                     <p>Indisponível</p>
                 </div>
             </CaptionContainer>
-            <FormsContainer>
+            <FormsContainer onSubmit={finishPurchase}>
                 <div>
                     <p>Nome do Comprador:</p>
-                    <input type="text" placeholder="Digite seu nome..." />
+                    <input type="text" value={buyerName} onChange={e => setBuyerName(e.target.value)} placeholder="Digite seu nome..." required />
                 </div>
                 <div>
                     <p>CPF do Comprador:</p>
-                    <input type="text" placeholder="Digite seu CPF..." />
+                    <input type="text" value={buyerId} onChange={e => setBuyerId(e.target.value)} placeholder="Digite seu CPF..." required />
                 </div>
                 <button type="submit">Reservar assento(s)</button>
             </FormsContainer>
@@ -76,7 +116,7 @@ const SeatsPage = ({
                 </PosterBox>
                 <div>
                     <p>{movie.title}</p>
-                    <p>{session.weekday} - {time.name}</p>
+                    <p>{session.weekday} {time.name}</p>
                 </div>
             </FooterContainer>
         </>

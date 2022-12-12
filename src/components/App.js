@@ -7,6 +7,7 @@ import Header from "./Header"
 import HomePage from "./HomePage"
 import SessionPage from "./SessionPage";
 import SeatsPage from "./SeatsPage";
+import SuccessPage from "./SuccessPage";
 
 
 export default function App() {
@@ -15,6 +16,11 @@ export default function App() {
     const [movie, setMovie] = useState([])
     const [session, setSession] = useState([])
     const [seats, setSeats] = useState([])
+    const [time, setTime] = useState([])
+    const [selectedSeats, setSelectedSeats] = useState([])
+    const [seatNumbers, setSeatNumbers] = useState([])
+    const [buyerName, setBuyerName] = useState("")
+    const [buyerId, setBuyerId] = useState("")
 
     return (
         <BrowserRouter>
@@ -23,8 +29,8 @@ export default function App() {
                 <Header />
                 <Routes>
                     <Route
-                    path="/"
-                    element={<HomePage
+                        path="/"
+                        element={<HomePage
                             poster={poster}
                             setPoster={setPoster}
                             movie={movie}
@@ -32,14 +38,14 @@ export default function App() {
                         />}
                     />
                     <Route
-                    path="/sessao/:movieId"
-                    element={<SessionPage
+                        path="/sessao/:movieId"
+                        element={<SessionPage
                             movie={movie}
                             setMovie={setMovie}
                             session={session}
                             setSession={setSession}
-                        />} 
-                    
+                        />}
+
                     />
                     <Route
                         path="/assentos/:sessionId"
@@ -47,9 +53,40 @@ export default function App() {
                             movie={movie}
                             setMovie={setMovie}
                             session={session}
-                            setSession={setSession} 
+                            setSession={setSession}
                             seats={seats}
                             setSeats={setSeats}
+                            time={time}
+                            setTime={setTime}
+                            selectedSeats={selectedSeats}
+                            setSelectedSeats={setSelectedSeats}
+                            buyerName={buyerName}
+                            setBuyerName={setBuyerName}
+                            buyerId={buyerId}
+                            setBuyerId={setBuyerId}
+                            seatNumbers={seatNumbers}
+                            setSeatNumbers={setSeatNumbers}
+                        />}
+                    />
+                    <Route
+                        path="/sucesso"
+                        element={<SuccessPage
+                            movie={movie}
+                            setMovie={setMovie}
+                            session={session}
+                            setSession={setSession}
+                            seats={seats}
+                            setSeats={setSeats}
+                            time={time}
+                            setTime={setTime}
+                            selectedSeats={selectedSeats}
+                            setSelectedSeats={setSelectedSeats}
+                            buyerName={buyerName}
+                            setBuyerName={setBuyerName}
+                            buyerId={buyerId}
+                            setBuyerId={setBuyerId}
+                            seatNumbers={seatNumbers}
+                            setSeatNumbers={setSeatNumbers}
                         />}
                     />
                 </Routes>
