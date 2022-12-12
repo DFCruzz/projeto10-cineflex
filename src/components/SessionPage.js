@@ -42,7 +42,7 @@ const SessionPage = ({
                         <ul>
                             {session[index].showtimes.map(b =>
                                 <Link data-test="showtime" key={b.id} to={`/assentos/${b.id}`}>
-                                    <li data-test="movie-day">{b.name}</li>
+                                    <li>{b.name}</li>
                                 </Link>
                             )}
                         </ul>
