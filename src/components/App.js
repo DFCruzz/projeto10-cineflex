@@ -38,7 +38,7 @@ export default function App() {
                         />}
                     />
                     <Route
-                        path="/sessao/:movieId"
+                        path="/sessoes/:movieId"
                         element={<SessionPage
                             movie={movie}
                             setMovie={setMovie}

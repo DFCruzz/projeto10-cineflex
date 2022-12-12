@@ -32,7 +32,7 @@ const HomePage = ({
       <MovieContainer>
         <ul>
           {poster.map((a, index) =>
-            <Link data-test="movie" key={index} to={`/sessao/${a.id}`}>
+            <Link data-test="movie" key={index} to={`/sessoes/${a.id}`}>
               <li>
                 <img src={a.posterURL} />
               </li>
