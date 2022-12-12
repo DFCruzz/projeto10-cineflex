@@ -14,6 +14,7 @@ export default function App() {
     const [poster, setPoster] = useState([])
     const [movie, setMovie] = useState([])
     const [session, setSession] = useState([])
+    const [seats, setSeats] = useState([])
 
     return (
         <BrowserRouter>
@@ -41,8 +42,15 @@ export default function App() {
                     
                     />
                     <Route
-                        path="/assentos/1"
-                        element={<SeatsPage />}
+                        path="/assentos/:sessionId"
+                        element={<SeatsPage
+                            movie={movie}
+                            setMovie={setMovie}
+                            session={session}
+                            setSession={setSession} 
+                            seats={seats}
+                            setSeats={setSeats}
+                        />}
                     />
                 </Routes>
             </MainContainer>

@@ -1,107 +1,53 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import axios from "axios";
+import { useEffect, useState  } from "react";
 import styled from "styled-components";
 
-const SeatsPage = ({ }) => {
+const SeatsPage = ({
+    movie,
+    setMovie,
+    session,
+    setSession,
+    seats,
+    setSeats
+}) => {
+
+    const [time, setTime] = useState([])
+
+    const { sessionId } = useParams()
+
+    useEffect(() => {
+        const promise = axios.get(`https://mock-api.driven.com.br/api/v8/cineflex/showtimes/${sessionId}/seats`)
+
+        promise.then(e => {
+            const seatsArr = e.data
+            console.log(seatsArr)
+            setTime(seatsArr)
+            setMovie(seatsArr.movie)
+            setSession(seatsArr.day)
+            setSeats(seatsArr.seats)
+        })
+
+        promise.catch(e => {
+            console.log(e.response.data)
+        })
+    }, [])
+
     return (
         <>
             <TitleBox>
                 <p>Selecione o(s) assento(s)</p>
             </TitleBox>
             <SeatsContainer>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
-                <li>
-                    <p>01</p>
-                </li>
+                {seats.map(a =>
+                    <li key={a.id} className={a.isAvailable ? null : "not-available"}>
+                        <p>{a.name}</p>
+                    </li>
+                )}
             </SeatsContainer>
             <CaptionContainer>
                 <div>
-                    <div></div>
+                    <div className="selected" ></div>
                     <p>Selecionado</p>
                 </div>
                 <div>
@@ -109,7 +55,7 @@ const SeatsPage = ({ }) => {
                     <p>Disponível</p>
                 </div>
                 <div>
-                    <div></div>
+                    <div className="not-available"></div>
                     <p>Indisponível</p>
                 </div>
             </CaptionContainer>
@@ -124,6 +70,15 @@ const SeatsPage = ({ }) => {
                 </div>
                 <button type="submit">Reservar assento(s)</button>
             </FormsContainer>
+            <FooterContainer>
+                <PosterBox>
+                    <img src={movie.posterURL} />
+                </PosterBox>
+                <div>
+                    <p>{movie.title}</p>
+                    <p>{session.weekday} - {time.name}</p>
+                </div>
+            </FooterContainer>
         </>
     )
 }
@@ -153,9 +108,20 @@ const SeatsContainer = styled.ul`
         width: 26px;
         height: 26px;
         background: #C3CFD9;
-        border: 1px solid #808F9D;
+        border: 1px solid;
+        border-color: #808F9D;
         border-radius: 12px;
         margin: 12px 4px;
+
+        &.not-available {
+            background: #FBE192;
+            border: 1px solid #F7C52B;  
+        }
+
+        &.selected {
+            background: #1AAE9E;
+            border: 1px solid #0E7D71; 
+        }
 
         p {
             width: 100%;
@@ -188,7 +154,17 @@ const CaptionContainer = styled.section`
             height: 25px;
             background: #C3CFD9;
             border: 1px solid #808F9D;
-            border-radius: 12px; 
+            border-radius: 12px;
+
+            &.not-available {
+                background: #FBE192;
+                border: 1px solid #F7C52B;  
+            }
+
+            &.selected {
+                background: #1AAE9E;
+                border: 1px solid #0E7D71; 
+            } 
         }
 
         p {
@@ -208,6 +184,7 @@ const FormsContainer = styled.form`
     align-items: center;
     justify-content: center;
     margin: 18px 0;
+    padding-bottom: 140px;
     
 
     div {
@@ -242,6 +219,42 @@ const FormsContainer = styled.form`
         font-size: 18px;
         font-weight: 400;
         margin-top: 32px;
+    }
+`
+
+const FooterContainer = styled.section`
+    width: 100%;
+    height: 117px;
+    display: flex;
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    background: #DFE6ED;
+    border-top: 1px solid #9EADBA;
+    align-items: center;
+
+    div {
+        color: #293845;
+        font-weight: 400;
+        font-size: 26px;
+    }
+`
+
+const PosterBox = styled.div`
+    width: 64px;
+    height: 89px;
+    background-color: #FFFFFF;
+    box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.1);
+    border-radius: 2px;
+    display: flex;
+    margin: 0 10px;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        width: 48px;
+        height: 72px;
+        margin: auto;
     }
 `
 

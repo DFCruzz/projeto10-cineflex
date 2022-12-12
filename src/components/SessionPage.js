@@ -44,9 +44,12 @@ const SessionPage = ({
                 {session.map((a, index) =>
                     <div key={a.id}>
                         <h2>{a.weekday} {a.date}</h2>
+                        
                         <ul>
                             {session[index].showtimes.map(b =>
-                                <li key={b.id}>{b.name}</li>
+                                <Link key={b.id} to={`/assentos/${b.id}`}>
+                                    <li>{b.name}</li>
+                                </Link>
                             )}
                         </ul>
                     </div>
